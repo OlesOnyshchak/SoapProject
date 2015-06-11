@@ -12,10 +12,11 @@ public class LineItem
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = true)
-    private Integer invoiceLineId;
+    private Integer lineItemId;
     @ManyToOne(fetch = FetchType.LAZY)
     private Invoice invoice;
     @ManyToOne(fetch = FetchType.LAZY)
     private Merchandise merchandise;
     public LineItem(){}
+
 }

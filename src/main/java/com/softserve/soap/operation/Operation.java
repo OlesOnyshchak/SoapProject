@@ -88,7 +88,7 @@ public class Operation
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT Name, Invoice_Total__c, Status__c FROM Invoice__c";
+        String soqlQuery = "SELECT Id,Name, Invoice_Total__c, Status__c FROM Invoice__c";
         try
         {
             qResult = connection.query(soqlQuery);
@@ -105,7 +105,7 @@ public class Operation
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT  Name, Invoice_Total__c, Status__c FROM Invoice__c";
+        String soqlQuery = "SELECT Invoice__c, Name FROM Line_Item__c where Invoice__c='a032000000LbbhDAAR'";
         try
         {
             qResult = connection.query(soqlQuery);
