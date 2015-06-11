@@ -1,33 +1,60 @@
 package com.softserve.soap;
 
-import com.softserve.soap.config.EntityManagerConfiguration;
-import com.softserve.soap.entity.Invoice;
-import com.softserve.soap.operation.Operation;
-import org.hibernate.Session;
 
-import javax.persistence.EntityManager;
+import com.softserve.soap.operation.Operation;
+import com.softserve.soap.service.Transformer;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        addDataToDataBase();
+        Transformer transformer = new Transformer();
+        transformer.saveInvoiceObjects();
+        transformer.saveMerchandiseObjects();
 
     }
-    private static void addDataToDataBase()
-    {
-        EntityManager entityManager = EntityManagerConfiguration.getEntityManager();
-        Invoice invoice = new Invoice();
-        invoice.setStatus("Ok");
-        entityManager.persist(invoice);
-        EntityManagerConfiguration.closeSession();
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private static void getInfoFromSalesForce(){
         Operation operation = new Operation();
-        operation.logIn();
+
         System.out.println();
-        operation.getMerchandiseFields();
+        operation.getMerchandises();
         System.out.println();
         operation.getInvoices();
         System.out.println();

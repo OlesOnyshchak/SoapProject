@@ -8,10 +8,10 @@ package com.softserve.soap.config;
 
     public class EntityManagerConfiguration
     {
-        private static final EntityManagerFactory entityManagerFactory = buildEntityManagerFactory();
-        private static final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        private EntityManagerFactory entityManagerFactory = buildEntityManagerFactory();
+        private EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        private static EntityManagerFactory buildEntityManagerFactory()
+        private EntityManagerFactory buildEntityManagerFactory()
         {
             try
             {
@@ -25,12 +25,12 @@ package com.softserve.soap.config;
             }
         }
 
-        public static EntityManager getEntityManager()
+        public  EntityManager getEntityManager()
         {
             return entityManager;
         }
 
-        public static void closeSession()
+        public  void closeSession()
         {
             entityManager.close();
             entityManagerFactory.close();

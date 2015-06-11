@@ -11,7 +11,8 @@ import javax.persistence.*;
 public class Invoice
 {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = true)
     private Integer invoiceId;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
     private List<LineItem> lineItems;
@@ -41,5 +42,13 @@ public class Invoice
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "invoiceId=" + invoiceId +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

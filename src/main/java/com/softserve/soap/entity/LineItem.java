@@ -10,7 +10,8 @@ import java.util.List;
 public class LineItem
 {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = true)
     private Integer invoiceLineId;
     @ManyToOne(fetch = FetchType.LAZY)
     private Invoice invoice;

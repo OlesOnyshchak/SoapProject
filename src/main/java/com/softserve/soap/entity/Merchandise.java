@@ -1,25 +1,54 @@
 package com.softserve.soap.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
+
 import static javax.persistence.GenerationType.IDENTITY;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+
 import java.util.List;
 
 @Entity
 public class Merchandise {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = true)
     private Integer merchandiseId;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
     private List<LineItem> lineItems;
-    private Integer price;
-    private Integer quantity;
+    private Double price;
+    private Double quantity;
    public Merchandise()
     {
     }
 
+    public Integer getMerchandiseId() {
+        return merchandiseId;
+    }
+
+    public void setMerchandiseId(Integer merchandiseId) {
+        this.merchandiseId = merchandiseId;
+    }
+
+    public List<LineItem> getLineItems() {
+        return lineItems;
+    }
+
+    public void setLineItems(List<LineItem> lineItems) {
+        this.lineItems = lineItems;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
 }

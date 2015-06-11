@@ -1,8 +1,5 @@
 package com.softserve.soap.config;
 
-/**
- * Created by oonysh on 10.06.2015.
- */
 public class Config {
     private static Config config;
     private String userName;
