@@ -1,6 +1,8 @@
 package com.softserve.soap;
 
 
+import com.sforce.soap.enterprise.sobject.Invoice__c;
+import com.sforce.soap.enterprise.sobject.SObject;
 import com.softserve.soap.operation.Operation;
 import com.softserve.soap.service.Transformer;
 
@@ -8,11 +10,19 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Transformer transformer = new Transformer();
-        transformer.saveInvoiceObjects();
-        transformer.saveMerchandiseObjects();
+        Operation operation = new Operation();
 
+        SObject sObject[] = operation.getInvoices();
+        Invoice__c salesForceInvoice = (Invoice__c)sObject[0];
+        System.out.println(salesForceInvoice.getLine_Items__r());
+        /*Transformer transformer = new Transformer();
+        transformer.saveInvoiceObjects();
+        transformer.saveMerchandiseObjects();*/
     }
+
+
+
+
 
 
 

@@ -47,6 +47,9 @@ public class Transformer
         for(SObject s:sObjects){
             Invoice myInvoice = new Invoice();
             Invoice__c salesForceInvoice = (Invoice__c)s;
+            System.out.println("///");
+            System.out.println(salesForceInvoice.getLine_Items__r());
+            System.out.println("///");
             myInvoice.setStatus(salesForceInvoice.getStatus__c());
             myInvoice.setLineItems(new ArrayList<LineItem>());
             invoiceList.add(myInvoice);

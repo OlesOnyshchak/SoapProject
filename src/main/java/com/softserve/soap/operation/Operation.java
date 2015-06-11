@@ -6,16 +6,19 @@ import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import com.softserve.soap.config.Config;
 
-public class Operation {
+public class Operation
+{
     private EnterpriseConnection connection;
     private ConnectorConfig config;
     private LoginResult loginResult;
 
-    public Operation() {
+    public Operation()
+    {
         login();
     }
 
-    public void login(){
+    public void login()
+    {
         config = new ConnectorConfig();
         config.setUsername(Config.getConfig().getUserName());
         config.setPassword(Config.getConfig().getPassword());
@@ -27,11 +30,13 @@ public class Operation {
         } catch (ConnectionException e1) {
             System.out.println("fail to login");
         }
-        /*printUserInfo(config);*/
+        printUserInfo(config);
     }
 
-    public boolean logout() {
-        try {
+    public boolean logout()
+    {
+        try
+        {
             connection.logout();
             System.out.println("Logged out.");
         } catch (ConnectionException ce) {
@@ -41,8 +46,10 @@ public class Operation {
         return true;
     }
 
-    private void printUserInfo(ConnectorConfig config) {
-        try {
+    private void printUserInfo(ConnectorConfig config)
+    {
+        try
+        {
             GetUserInfoResult userInfo = connection.getUserInfo();
             System.out.println("\nLogging in ...\n");
             System.out.println("UserID: " + userInfo.getUserId());
@@ -53,32 +60,59 @@ public class Operation {
             System.out.println("Auth End Point: " + config.getAuthEndpoint());
             System.out.println("Service End Point: " + config.getServiceEndpoint());
             System.out.println();
-        } catch (ConnectionException ce) {
+        }
+        catch (ConnectionException ce)
+        {
             ce.printStackTrace();
         }
     }
 
-    public SObject[] getMerchandises(){
+    public SObject[] getMerchandises()
+    {
         QueryResult qResult = null;
         String soqlQuery = "SELECT Name, Price__c, Quantity__c FROM Merchandise__c";
         SObject[] records = null;
-        try {
+        try
+        {
             qResult = connection.query(soqlQuery);
             records = qResult.getRecords();
-        } catch (ConnectionException e) {
+        }
+        catch (ConnectionException e)
+        {
             e.printStackTrace();
         }
         return records;
     }
 
-    public SObject[] getInvoices() {
+    public SObject[] getInvoices()
+    {
         SObject[] records = null;
         QueryResult qResult = null;
         String soqlQuery = "SELECT Name, Invoice_Total__c, Status__c FROM Invoice__c";
-        try {
+        try
+        {
             qResult = connection.query(soqlQuery);
             records = qResult.getRecords();
-        } catch (ConnectionException e) {
+        }
+        catch (ConnectionException e)
+        {
+            e.printStackTrace();
+        }
+        return records;
+    }
+
+    public SObject[] getLine_Item()
+    {
+        SObject[] records = null;
+        QueryResult qResult = null;
+        String soqlQuery = "SELECT  Name, Invoice_Total__c, Status__c FROM Invoice__c";
+        try
+        {
+            qResult = connection.query(soqlQuery);
+            records = qResult.getRecords();
+        }
+        catch (ConnectionException e)
+        {
             e.printStackTrace();
         }
         return records;
