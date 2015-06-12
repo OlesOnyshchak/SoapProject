@@ -101,11 +101,29 @@ public class Operation
         return records;
     }
 
-    public SObject[] getLine_Item()
+    public SObject[] getLineItem(String id)
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT Invoice__c, Name FROM Line_Item__c where Invoice__c='a032000000LbbhDAAR'";
+        String soqlQuery = "SELECT Invoice__c,Line_Item_Total__c, Quantity__c, Unit_Price__c, " +
+                " Name FROM Line_Item__c where Invoice__c='"+id+"'";
+        try
+        {
+            qResult = connection.query(soqlQuery);
+            records = qResult.getRecords();
+        }
+        catch (ConnectionException e)
+        {
+            e.printStackTrace();
+        }
+        return records;
+    }
+
+    public SObject[] getLineItem()
+    {
+        SObject[] records = null;
+        QueryResult qResult = null;
+        String soqlQuery = "SELECT Invoice__c,Line_Item_Total__c, Quantity__c, Unit_Price__c,  Name FROM Line_Item__c ";
         try
         {
             qResult = connection.query(soqlQuery);

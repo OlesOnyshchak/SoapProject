@@ -2,8 +2,6 @@ package com.softserve.soap.entity;
 
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.util.List;
 
 @Entity
@@ -12,7 +10,7 @@ public class Merchandise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = true)
     private Integer merchandiseId;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "merchandise")
     private List<LineItem> lineItems;
     private Double price;
     private Double quantity;

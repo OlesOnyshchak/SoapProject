@@ -19,6 +19,21 @@ public class Transformer
 {
     private Operation operation = new Operation();
 
+    public void saveLineItem(){
+        List<Invoice> invoiceList =transformInvoice(operation.getInvoices());
+        List<Merchandise> merchandiseList = transformMerchandise(operation.getMerchandises());
+        EntityManagerConfiguration entityManagerConfiguration = new EntityManagerConfiguration();
+        EntityManager entityManager = entityManagerConfiguration.getEntityManager();
+        entityManager.getTransaction().begin();
+        List<LineItem> lineItemList = transformLineItem(operation.getLineItem());
+        LineItem lineItem =lineItemList.get(0);
+        lineItem.setInvoice(invoiceList.get(0));
+        lineItem.setMerchandise(merchandiseList.get(0));
+        entityManager.persist(lineItem);
+        entityManager.getTransaction().commit();
+        entityManagerConfiguration.closeSession();
+    }
+
     public void saveInvoiceObjects()
     {
         EntityManagerConfiguration entityManagerConfiguration = new EntityManagerConfiguration();
@@ -44,22 +59,40 @@ public class Transformer
     private List<Invoice> transformInvoice(SObject[] sObjects)
     {
       List<Invoice>invoiceList = new ArrayList<Invoice>();
-        for(SObject s:sObjects){
+        for(SObject s:sObjects)
+        {
             Invoice myInvoice = new Invoice();
             Invoice__c salesForceInvoice = (Invoice__c)s;
-            System.out.println("///");
-            System.out.println(salesForceInvoice.getLine_Items__r());
-            System.out.println("///");
+           List<LineItem> lineItems=  getLineItemsCorrespondingToInvoice(salesForceInvoice.getId());
+            System.out.println(salesForceInvoice.getId());
             myInvoice.setStatus(salesForceInvoice.getStatus__c());
-            myInvoice.setLineItems(new ArrayList<LineItem>());
+            myInvoice.setLineItems(lineItems);
             invoiceList.add(myInvoice);
         }
         return invoiceList;
     }
 
-    private List<Merchandise> transformMerchandise(SObject[] sObjects){
+    public List<LineItem> getLineItemsCorrespondingToInvoice(String id)
+    {
+        SObject[] sObjects = operation.getLineItem(id);
+        List<LineItem>lineItemList = new ArrayList<LineItem>();
+        for(SObject s:sObjects)
+        {
+            LineItem lineItem = new LineItem();
+            Line_Item__c lineItemC = (Line_Item__c)s;
+            lineItem.setQuantity(lineItemC.getQuantity__c());
+            lineItem.setUnitPrice(lineItemC.getUnit_Price__c());
+            lineItemList.add(lineItem);
+        }
+
+        return lineItemList;
+    }
+
+    private List<Merchandise> transformMerchandise(SObject[] sObjects)
+    {
         List<Merchandise>merchandiseList = new ArrayList<Merchandise>();
-        for(SObject s:sObjects){
+        for(SObject s:sObjects)
+        {
             Merchandise myMerchandise = new Merchandise();
             Merchandise__c salesForceMerchandise = ( Merchandise__c)s;
             myMerchandise.setPrice(salesForceMerchandise.getPrice__c());
@@ -68,5 +101,20 @@ public class Transformer
             merchandiseList.add(myMerchandise);
         }
         return merchandiseList;
+    }
+
+    public List<LineItem> transformLineItem(SObject[] sObjects)
+    {
+        List<LineItem>lineItemList = new ArrayList<LineItem>();
+        for(SObject s:sObjects)
+        {
+            LineItem lineItem = new LineItem();
+            Line_Item__c salesForceLineItem = (Line_Item__c)s;
+            lineItem.setUnitPrice(salesForceLineItem.getUnit_Price__c());
+            lineItem.setQuantity(salesForceLineItem.getQuantity__c());
+            lineItem.setLineItemName(salesForceLineItem.getName());
+            lineItemList.add(lineItem);
+        }
+        return lineItemList;
     }
 }
