@@ -1,4 +1,4 @@
-package com.softserve.soap.operation;
+package com.softserve.soap.request;
 
 import com.sforce.soap.enterprise.*;
 import com.sforce.soap.enterprise.sobject.*;
@@ -6,13 +6,13 @@ import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import com.softserve.soap.config.Config;
 
-public class Operation
+public class Request
 {
     private EnterpriseConnection connection;
     private ConnectorConfig config;
     private LoginResult loginResult;
 
-    public Operation()
+    public Request()
     {
         login();
     }
@@ -33,7 +33,7 @@ public class Operation
         printUserInfo(config);
     }
 
-    public boolean logout()
+    public void logout()
     {
         try
         {
@@ -41,9 +41,7 @@ public class Operation
             System.out.println("Logged out.");
         } catch (ConnectionException ce) {
             System.out.println("fail to logout");
-            return false;
         }
-        return true;
     }
 
     private void printUserInfo(ConnectorConfig config)
@@ -101,6 +99,24 @@ public class Operation
         return records;
     }
 
+    public SObject[] getInv()
+    {
+        SObject[] records = null;
+        QueryResult qResult = null;
+        String soqlQuery = "SELECT Id,Name,(SELECT Name,Invoice__c,Line_Item_Total__c,Quantity__c,Unit_Price__c " +
+                "FROM Line_Items__r) FROM Invoice__c";
+        try
+        {
+            qResult = connection.query(soqlQuery);
+            records = qResult.getRecords();
+        }
+        catch (ConnectionException e)
+        {
+            e.printStackTrace();
+        }
+        return records;
+    }
+
     public SObject[] getLineItem(String id)
     {
         SObject[] records = null;
@@ -119,11 +135,29 @@ public class Operation
         return records;
     }
 
+    public SObject[] getInvoicesWithLineItem(String id)
+    {
+        SObject[] records = null;
+        QueryResult qResult = null;
+        String soqlQuery = "SELECT Name,(SELECT Name,Invoice__c,Line_Item_Total__c,Quantity__c,Unit_Price__c" +
+                " FROM Line_Items__r)FROM Invoice__c i WHERE i.id = '"+id+"'";
+        try
+        {
+            qResult = connection.query(soqlQuery);
+            records = qResult.getRecords();
+        }
+        catch (ConnectionException e)
+        {
+            e.printStackTrace();
+        }
+        return records;
+    }
+
     public SObject[] getLineItem()
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT Invoice__c,Line_Item_Total__c, Quantity__c, Unit_Price__c,  Name FROM Line_Item__c ";
+        String soqlQuery = "SELECT Id, Invoice__c,Line_Item_Total__c, Quantity__c, Unit_Price__c,  Name FROM Line_Item__c ";
         try
         {
             qResult = connection.query(soqlQuery);

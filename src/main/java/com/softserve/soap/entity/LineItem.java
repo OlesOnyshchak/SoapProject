@@ -15,12 +15,10 @@ public class LineItem
 
     private Integer lineItemId;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
-    @JoinColumn(name = "invoiceId")
+    @ManyToOne
     private Invoice invoice;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
-    @JoinColumn(name = "merchandiseId")
+    @ManyToOne
     private Merchandise merchandise;
 
     private String lineItemName;

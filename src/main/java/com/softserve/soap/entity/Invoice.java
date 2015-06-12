@@ -14,7 +14,8 @@ public class Invoice
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = true)
     private Integer invoiceId;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
+    @OneToMany(cascade = {CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "invoice_id")
     private List<LineItem> lineItems;
     private String status;
 

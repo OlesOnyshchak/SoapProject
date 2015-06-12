@@ -10,10 +10,12 @@ public class Merchandise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = true)
     private Integer merchandiseId;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "merchandise")
+    @OneToMany(cascade = {CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "merchandise_id")
     private List<LineItem> lineItems;
     private Double price;
     private Double quantity;
+    private String name;
    public Merchandise()
     {
     }
@@ -48,5 +50,13 @@ public class Merchandise {
 
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
