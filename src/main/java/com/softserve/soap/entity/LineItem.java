@@ -2,10 +2,6 @@ package com.softserve.soap.entity;
 
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
-import java.util.List;
-
 @Entity
 public class LineItem
 {
@@ -15,62 +11,78 @@ public class LineItem
 
     private Integer lineItemId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "merchandise_id")
     private Merchandise merchandise;
-
     private String lineItemName;
     private Double quantity;
     private Double unitPrice;
-    public LineItem(){}
 
-    public Integer getLineItemId() {
+    public LineItem()
+    {
+    }
+
+    public Integer getLineItemId()
+    {
         return lineItemId;
     }
 
-    public void setLineItemId(Integer lineItemId) {
+    public void setLineItemId(Integer lineItemId)
+    {
         this.lineItemId = lineItemId;
     }
 
-    public Invoice getInvoice() {
+    public Invoice getInvoice()
+    {
         return invoice;
     }
 
-    public void setInvoice(Invoice invoice) {
+    public void setInvoice(Invoice invoice)
+    {
         this.invoice = invoice;
     }
 
-    public Merchandise getMerchandise() {
+    public Merchandise getMerchandise()
+    {
         return merchandise;
     }
 
-    public void setMerchandise(Merchandise merchandise) {
+    public void setMerchandise(Merchandise merchandise)
+    {
         this.merchandise = merchandise;
     }
 
-    public String getLineItemName() {
+    public String getLineItemName()
+    {
         return lineItemName;
     }
 
-    public void setLineItemName(String lineItemName) {
+    public void setLineItemName(String lineItemName)
+    {
         this.lineItemName = lineItemName;
     }
 
-    public Double getQuantity() {
+    public Double getQuantity()
+    {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(Double quantity)
+    {
         this.quantity = quantity;
     }
 
-    public Double getUnitPrice() {
+    public Double getUnitPrice()
+    {
         return unitPrice;
     }
 
-    public void setUnitPrice(Double unitPrice) {
+    public void setUnitPrice(Double unitPrice)
+    {
         this.unitPrice = unitPrice;
     }
 }

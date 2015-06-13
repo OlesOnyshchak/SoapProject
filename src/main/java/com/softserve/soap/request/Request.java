@@ -14,7 +14,6 @@ public class Request
 
     public Request()
     {
-        login();
     }
 
     public void login()
@@ -22,12 +21,14 @@ public class Request
         config = new ConnectorConfig();
         config.setUsername(Config.getConfig().getUserName());
         config.setPassword(Config.getConfig().getPassword());
-        try {
+        try
+        {
             connection = Connector.newConnection(config);
             loginResult = connection.login(Config.getConfig().getUserName(), Config.getConfig().getPassword());
             System.out.println(loginResult.getSessionId());
-            System.out.println(loginResult.getUserInfo());
-        } catch (ConnectionException e1) {
+        }
+        catch (ConnectionException e1)
+        {
             System.out.println("fail to login");
         }
         printUserInfo(config);
@@ -39,7 +40,9 @@ public class Request
         {
             connection.logout();
             System.out.println("Logged out.");
-        } catch (ConnectionException ce) {
+        }
+        catch (ConnectionException ce)
+        {
             System.out.println("fail to logout");
         }
     }
@@ -65,11 +68,11 @@ public class Request
         }
     }
 
-    public SObject[] getMerchandises()
+    public SObject[] getInvoiceById(String id)
     {
-        QueryResult qResult = null;
-        String soqlQuery = "SELECT Name, Price__c, Quantity__c FROM Merchandise__c";
         SObject[] records = null;
+        QueryResult qResult = null;
+        String soqlQuery = "SELECT Id,Name, Invoice_Total__c, Status__c FROM Invoice__c i WHERE i.id = '" + id + "'";
         try
         {
             qResult = connection.query(soqlQuery);
@@ -82,11 +85,11 @@ public class Request
         return records;
     }
 
-    public SObject[] getInvoices()
+    public SObject[] getMerchandiseById(String id)
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT Id,Name, Invoice_Total__c, Status__c FROM Invoice__c";
+        String soqlQuery = "SELECT Name, Price__c, Quantity__c FROM Merchandise__c i WHERE i.id = '" + id + "'";
         try
         {
             qResult = connection.query(soqlQuery);
@@ -99,30 +102,13 @@ public class Request
         return records;
     }
 
-    public SObject[] getInv()
+    public SObject[] getMerchandiseWithLineItem(String id)
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT Id,Name,(SELECT Name,Invoice__c,Line_Item_Total__c,Quantity__c,Unit_Price__c " +
-                "FROM Line_Items__r) FROM Invoice__c";
-        try
-        {
-            qResult = connection.query(soqlQuery);
-            records = qResult.getRecords();
-        }
-        catch (ConnectionException e)
-        {
-            e.printStackTrace();
-        }
-        return records;
-    }
-
-    public SObject[] getLineItem(String id)
-    {
-        SObject[] records = null;
-        QueryResult qResult = null;
-        String soqlQuery = "SELECT Invoice__c,Line_Item_Total__c, Quantity__c, Unit_Price__c, " +
-                " Name FROM Line_Item__c where Invoice__c='"+id+"'";
+        String soqlQuery = "SELECT Id, Name, Price__c, Quantity__c,(SELECT Name,Merchandise__c,Invoice__c," +
+                "Line_Item_Total__c,Quantity__c,Unit_Price__c FROM Line_Items__r) FROM Merchandise__c i " +
+                "WHERE i.id = '" + id + "'";
         try
         {
             qResult = connection.query(soqlQuery);
@@ -139,25 +125,9 @@ public class Request
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT Name,(SELECT Name,Invoice__c,Line_Item_Total__c,Quantity__c,Unit_Price__c" +
-                " FROM Line_Items__r)FROM Invoice__c i WHERE i.id = '"+id+"'";
-        try
-        {
-            qResult = connection.query(soqlQuery);
-            records = qResult.getRecords();
-        }
-        catch (ConnectionException e)
-        {
-            e.printStackTrace();
-        }
-        return records;
-    }
-
-    public SObject[] getLineItem()
-    {
-        SObject[] records = null;
-        QueryResult qResult = null;
-        String soqlQuery = "SELECT Id, Invoice__c,Line_Item_Total__c, Quantity__c, Unit_Price__c,  Name FROM Line_Item__c ";
+        String soqlQuery = "SELECT Id,Name,Status__c,(SELECT Name,Merchandise__c,Invoice__c," +
+                "Line_Item_Total__c,Quantity__c,Unit_Price__c" +
+                " FROM Line_Items__r)FROM Invoice__c i WHERE i.id = '" + id + "'";
         try
         {
             qResult = connection.query(soqlQuery);

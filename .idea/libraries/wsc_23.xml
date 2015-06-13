@@ -1,12 +1,10 @@
 <component name="libraryTable">
-  <library name="wsc-22">
+  <library name="wsc-23">
     <CLASSES>
-      <root url="jar://C:/wsc-22.jar!/" />
       <root url="jar://C:/wsc-23.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://C:/wsc-22.jar!/" />
       <root url="jar://C:/wsc-23.jar!/" />
     </SOURCES>
   </library>

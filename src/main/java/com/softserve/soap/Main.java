@@ -1,26 +1,83 @@
 package com.softserve.soap;
 
-
+import com.softserve.soap.config.EntityManagerConfiguration;
+import com.softserve.soap.entity.Invoice;
+import com.softserve.soap.entity.Merchandise;
 import com.softserve.soap.request.Request;
-import com.sforce.soap.enterprise.sobject.*;
-import com.softserve.soap.service.Repository;
-
-import java.util.Arrays;
+import com.softserve.soap.service.InvoiceService;
+import com.softserve.soap.service.MerchandiseService;
+import com.softserve.soap.service.impl.InvoiceServiceImpl;
+import com.softserve.soap.service.impl.MerchandiseServiceImpl;
+import com.softserve.soap.transformer.InvoiceTransformer;
+import com.softserve.soap.transformer.MerchandiseTransformer;
 
 public class Main
 {
+    private static Request request = new Request();
+    private static final String INVOICE_ID = "a032000000LbbhDAAR";
+    private static final String MERCHANDISE_ID = "a022000000hbaUyAAI";
 
     public static void main(String[] args)
     {
-        Repository repository = new Repository();
-        repository.saveOneInvoice();
-       /* repository.saveInvoiceObjects();
-        repository.saveMerchandiseObjects();
-        repository.saveLineItem();
-        repository.closeSession();*/
-        repository.closeSession();
+        request.login();
+        saveInvoice();
+        saveMerchandise();
+        request.logout();
+        closeSession();
+
+    }
+
+    private static void saveInvoice()
+    {
+        Invoice invoice = new InvoiceTransformer().transformOne(
+                request.getInvoicesWithLineItem(INVOICE_ID),request);
+        InvoiceService invoiceService = new InvoiceServiceImpl();
+        invoiceService.saveInvoice(invoice);
+    }
+
+    private static void saveMerchandise()
+    {
+        Merchandise merchandise = new MerchandiseTransformer().transformOne(
+                request.getMerchandiseWithLineItem(MERCHANDISE_ID),request);
+        MerchandiseService merchandiseService = new MerchandiseServiceImpl();
+        merchandiseService.saveMerchandise(merchandise);
+    }
+
+    private static void closeSession()
+    {
+        EntityManagerConfiguration entityManagerConfiguration = new EntityManagerConfiguration();
+        entityManagerConfiguration.closeSession();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
