@@ -1,5 +1,7 @@
 package com.softserve.soap;
 
+import com.sforce.soap.enterprise.sobject.Invoice__c;
+import com.sforce.soap.enterprise.sobject.SObject;
 import com.softserve.soap.config.EntityManagerConfiguration;
 import com.softserve.soap.entity.Invoice;
 import com.softserve.soap.entity.Merchandise;
@@ -14,14 +16,14 @@ import com.softserve.soap.transformer.MerchandiseTransformer;
 public class Main
 {
     private static Request request = new Request();
-    private static final String INVOICE_ID = "a032000000LbbhDAAR";
-    private static final String MERCHANDISE_ID = "a022000000hbaUyAAI";
+    private static final String EXTERNAL_INVOICE_ID = "INV-0007";
+    private static final String EXTERNAL_MERCHANDISE_ID = "Desktop";
 
     public static void main(String[] args)
     {
         request.login();
-        saveInvoice();
         saveMerchandise();
+        saveInvoice();
         request.logout();
         closeSession();
     }
@@ -29,7 +31,7 @@ public class Main
     private static void saveInvoice()
     {
         Invoice invoice = new InvoiceTransformer().transformOne(
-                request.getInvoicesWithLineItem(INVOICE_ID),request);
+                request.getInvoicesWithLineItem(EXTERNAL_INVOICE_ID),request);
         InvoiceService invoiceService = new InvoiceServiceImpl();
         invoiceService.saveInvoice(invoice);
     }
@@ -37,7 +39,7 @@ public class Main
     private static void saveMerchandise()
     {
         Merchandise merchandise = new MerchandiseTransformer().transformOne(
-                request.getMerchandiseWithLineItem(MERCHANDISE_ID),request);
+                request.getMerchandiseWithLineItem(EXTERNAL_MERCHANDISE_ID),request);
         MerchandiseService merchandiseService = new MerchandiseServiceImpl();
         merchandiseService.saveMerchandise(merchandise);
     }

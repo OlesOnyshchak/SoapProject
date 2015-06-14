@@ -102,13 +102,13 @@ public class Request
         return records;
     }
 
-    public SObject[] getMerchandiseWithLineItem(String id)
+    public SObject[] getMerchandiseWithLineItem(String externalId)
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT Id, Name, Price__c, Quantity__c,(SELECT Name,Merchandise__c,Invoice__c," +
+        String soqlQuery = "SELECT Id, Name, ExternalId__c, Price__c, Quantity__c,(SELECT Name,Merchandise__c,Invoice__c," +
                 "Line_Item_Total__c,Quantity__c,Unit_Price__c FROM Line_Items__r) FROM Merchandise__c i " +
-                "WHERE i.id = '" + id + "'";
+                "WHERE i.ExternalId__c = '" + externalId + "'";
         try
         {
             qResult = connection.query(soqlQuery);
@@ -121,13 +121,13 @@ public class Request
         return records;
     }
 
-    public SObject[] getInvoicesWithLineItem(String id)
+    public SObject[] getInvoicesWithLineItem(String externalId)
     {
         SObject[] records = null;
         QueryResult qResult = null;
-        String soqlQuery = "SELECT Id,Name,Status__c,(SELECT Name,Merchandise__c,Invoice__c," +
+        String soqlQuery = "SELECT Id,Name,Invoice1__c,Status__c,(SELECT Name,Merchandise__c,Invoice__c," +
                 "Line_Item_Total__c,Quantity__c,Unit_Price__c" +
-                " FROM Line_Items__r)FROM Invoice__c i WHERE i.id = '" + id + "'";
+                " FROM Line_Items__r)FROM Invoice__c i WHERE i.Invoice1__c = '" + externalId + "'";
         try
         {
             qResult = connection.query(soqlQuery);

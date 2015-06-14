@@ -49,9 +49,6 @@
     <orderEntry type="library" name="Maven: cglib:cglib:2.2" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
-    <orderEntry type="library" name="wsc-23" level="project" />
-    <orderEntry type="library" name="wsc-22" level="project" />
-    <orderEntry type="library" name="output" level="project" />
-    <orderEntry type="library" name="output1" level="project" />
+    <orderEntry type="library" name="output4" level="project" />
   </component>
 </module>
