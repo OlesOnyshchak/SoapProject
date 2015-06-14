@@ -1,7 +1,5 @@
 package com.softserve.soap;
 
-import com.sforce.soap.enterprise.sobject.Invoice__c;
-import com.sforce.soap.enterprise.sobject.SObject;
 import com.softserve.soap.config.EntityManagerConfiguration;
 import com.softserve.soap.entity.Invoice;
 import com.softserve.soap.entity.Merchandise;
